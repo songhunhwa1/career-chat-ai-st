@@ -8,7 +8,7 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def main():
-    st.title("Chat with AI")
+    st.title("👩‍🚀 Chat with AI")
     st.markdown("""
         <style>
         .small-font {
