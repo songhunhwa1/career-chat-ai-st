@@ -12,17 +12,6 @@ def main():
     st.subheader("Hi Joan. I miss you.")
     st.markdown("""
         <style>
-        .small-font {
-            font-size:14px !important;
-        }
-        </style>
-        <div class='small-font'>
-            Email me: <a href="mailto:songhunhwa@gmail.com">songhunhwa@gmail.com</a>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.markdown("""
-        <style>
         div.stButton > button {
             color: white;
             background-color: orange;
