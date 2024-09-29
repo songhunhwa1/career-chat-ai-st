@@ -9,7 +9,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def main():
     st.title("👩‍🚀 Chat with AI")
-    st.subheader("Hi Joan. I miss you.")
+    st.subheader("Hi Joan. Have a good day.")
     st.markdown("""
         <style>
         div.stButton > button {
