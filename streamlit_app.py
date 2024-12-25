@@ -8,57 +8,60 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def main():
-    st.title("👩‍🚀 Chat with AI")
-    st.subheader("Hi Joan. Have a good day.")
+    # Page setup
+    st.set_page_config(page_title="Chat with AI", layout="wide")
+    st.title("🤖 Chat with AI")
+    st.markdown("Ask me anything!")
 
     # Initialize chat history
-    if 'chat_history' not in st.session_state:
+    if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
-    def submit_query():
-        user_input = st.session_state.query
-        if user_input:
-            response = ask(user_input)
-            st.session_state.chat_history.append((user_input, response))
-            st.session_state.query = ""  # Clear input box
+    # Display chat history
+    for message in st.session_state.chat_history:
+        if message["role"] == "user":
+            with st.chat_message("user"):
+                st.markdown(message["content"])
+        elif message["role"] == "assistant":
+            with st.chat_message("assistant"):
+                st.markdown(message["content"])
 
-    # Chat input box
-    user_input = st.text_input("Ask something:", key="query", on_change=submit_query)
-
-    # Chat display
-    for q, a in st.session_state.chat_history:
+    # Chat input box at the bottom
+    if user_input := st.chat_input("Type your message here..."):
+        # Display user message immediately
         with st.chat_message("user"):
-            st.markdown(q)
+            st.markdown(user_input)
+
+        # Save user message to chat history
+        st.session_state.chat_history.append({"role": "user", "content": user_input})
+
+        # Generate response from OpenAI
+        with st.spinner("AI is typing..."):
+            response = ask_openai(user_input)
+
+        # Display assistant response
         with st.chat_message("assistant"):
-            st.markdown(a)
+            st.markdown(response)
 
-    # Sidebar for conversation history
-    with st.sidebar:
-        st.title("Conversation History")
-        for i, (q, a) in enumerate(st.session_state.chat_history, 1):
-            st.markdown(f"**Q{i}:** {q}")
-            st.markdown(f"**A{i}:** {a}")
-            st.markdown("---")
-        if st.button("Clear Chat"):
-            st.session_state.chat_history = []
-            st.experimental_rerun()
+        # Save assistant response to chat history
+        st.session_state.chat_history.append({"role": "assistant", "content": response})
 
-def ask(question):
+def ask_openai(prompt):
     try:
-        # Include chat history for context
+        # Prepare the conversation history for context
         messages = [{"role": "system", "content": "You are a helpful assistant."}]
-        for q, a in st.session_state.chat_history:
-            messages.append({"role": "user", "content": q})
-            messages.append({"role": "assistant", "content": a})
-        messages.append({"role": "user", "content": question})
+        for message in st.session_state.chat_history:
+            messages.append({"role": message["role"], "content": message["content"]})
+        messages.append({"role": "user", "content": prompt})
 
+        # Get the response from OpenAI
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages
         )
-        return response.choices[0].message['content']
+        return response.choices[0].message["content"]
     except Exception as e:
-        return f"An error occurred: {str(e)}"
+        return f"An error occurred: {e}"
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
