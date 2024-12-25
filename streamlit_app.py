@@ -10,15 +10,17 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def main():
     # Page setup
-    st.set_page_config(page_title="Chat with AI", layout="wide")
+    st.set_page_config(page_title="Chat with AI")
     st.title("🤖 Chat with AI")
-    st.markdown("Ask me anything!")
 
     # Sidebar with email address
     with st.sidebar:
         st.title("Contact Info")
-        st.markdown("📧 **Email:** your_email@example.com")
+        st.markdown("📧 Email: songhunhwa@gmail.com")
         st.markdown("---")  # Separator for aesthetic purposes
+        if st.button("Clear Chat"):
+            st.session_state.chat_history = []
+            st.experimental_rerun()
 
     # Initialize chat history
     if "chat_history" not in st.session_state:
@@ -57,7 +59,7 @@ def main():
                 st.markdown(message["content"])
 
     # Chat input box at the bottom
-    if user_input := st.chat_input("Type your message here..."):
+    if user_input := st.chat_input("Ask me anything!"):
         # Display user message immediately
         with st.chat_message("user"):
             st.markdown(user_input)
