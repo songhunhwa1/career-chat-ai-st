@@ -11,6 +11,12 @@ def main():
     # Page setup
     st.set_page_config(page_title="Chat with AI")
     st.title("Ask me anything!")
+    st.markdown("Have a nice day~")
+
+    with st.sidebar:
+        st.title("Contact Info")
+        st.markdown("📧 **Email:** songhunhwa@gmail.com")
+        st.markdown("---")  # Separator for aesthetic purposes
     
     # Initialize chat history
     if "chat_history" not in st.session_state:
