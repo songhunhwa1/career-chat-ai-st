@@ -10,14 +10,14 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def main():
     # Page setup
-    st.set_page_config(page_title="Chat with AI")
-    st.title("Chat with AI")
+    st.set_page_config(page_title="Chat with AI", layout="wide")
+    st.title("🤖 Chat with AI")
     st.markdown("Ask me anything!")
 
     # Sidebar with email address
     with st.sidebar:
         st.title("Contact Info")
-        st.markdown("📧 Email: songhunhwa@gmail.com")
+        st.markdown("📧 **Email:** your_email@example.com")
         st.markdown("---")  # Separator for aesthetic purposes
 
     # Initialize chat history
@@ -36,13 +36,14 @@ def main():
             # Simulate streaming with OpenAI response
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
-                messages=messages,
-                stream=True  # Enables OpenAI streaming
+                messages=messages
             )
-            for chunk in response:
-                if "content" in chunk.choices[0].delta:
-                    yield chunk.choices[0].delta["content"]
-                time.sleep(0.02)  # Simulate delay for chunk updates
+            full_response = response.choices[0].message["content"]
+
+            # Yield the response in chunks
+            for word in full_response.split():
+                yield word + " "
+                time.sleep(0.05)  # Simulate delay for streaming
         except Exception as e:
             yield f"An error occurred: {e}"
 
@@ -67,13 +68,10 @@ def main():
         # Stream assistant response
         assistant_response = []
         with st.chat_message("assistant"):
-            with st.write_stream() as stream:
-                for chunk in stream_response(user_input):
-                    stream.write(chunk)
-                    assistant_response.append(chunk)
+            st.write_stream(stream_response(user_input))
 
         # Save assistant response to chat history
-        full_response = "".join(assistant_response)
+        full_response = "".join(stream_response(user_input))
         st.session_state.chat_history.append({"role": "assistant", "content": full_response})
 
 if __name__ == "__main__":
