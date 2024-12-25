@@ -15,12 +15,7 @@ def main():
 
     # Sidebar with email address
     with st.sidebar:
-        st.title("Contact Info")
         st.markdown("📧 Email: songhunhwa@gmail.com")
-        st.markdown("---")  # Separator for aesthetic purposes
-        if st.button("Clear Chat"):
-            st.session_state.chat_history = []
-            st.experimental_rerun()
 
     # Initialize chat history
     if "chat_history" not in st.session_state:
