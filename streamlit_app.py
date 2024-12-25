@@ -11,7 +11,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 def main():
     # Page setup
     st.set_page_config(page_title="Chat with AI")
-    st.title("🤖 Chat with AI")
+    st.title("💬 Chat with AI")
 
     # Sidebar with email address
     with st.sidebar:
