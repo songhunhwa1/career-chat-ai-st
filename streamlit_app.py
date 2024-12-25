@@ -9,10 +9,9 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def main():
     # Page setup
-    st.set_page_config(page_title="Chat with AI", layout="wide")
-    st.title("🤖 Chat with AI")
-    st.markdown("Ask me anything!")
-
+    st.set_page_config(page_title="Chat with AI")
+    st.title("Ask me anything!")
+    
     # Initialize chat history
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
