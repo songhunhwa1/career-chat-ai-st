@@ -34,7 +34,7 @@ def main():
             return f"An error occurred: {e}"
 
     # Input box for user message
-    user_input = st.text_input(placeholder="Ask anything...", key="user_input")
+    user_input = st.text_input("Type your message here:", placeholder="Ask anything...", key="user_input")
 
     # Add a "Send" button
     send_button = st.button("Send")
