@@ -12,10 +12,6 @@ def main():
     st.set_page_config(page_title="Chat with AI")
     st.title("Chat with AI")
 
-    # Sidebar for additional options or information
-    with st.sidebar:
-        st.markdown("Email: songhunhwa@gmail.com")
-
     # Ensure API key is loaded
     if not openai.api_key:
         st.error("API key not found. Please check your .env file.")
@@ -38,7 +34,7 @@ def main():
             return f"An error occurred: {e}"
 
     # Input box for user message
-    user_input = st.text_input("Type your message here:", placeholder="Ask anything...", key="user_input")
+    user_input = st.text_input(placeholder="Ask anything...", key="user_input")
 
     # Add a "Send" button
     send_button = st.button("Send")
@@ -50,6 +46,10 @@ def main():
 
         # Display AI response
         st.markdown(f"**AI:** {ai_response}")
+
+    # Add footer
+    st.markdown("---")
+    st.markdown("© 2025 Chat with AI. All rights reserved.", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
