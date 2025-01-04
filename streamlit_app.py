@@ -15,7 +15,6 @@ def main():
     # Sidebar for additional options or information
     with st.sidebar:
         st.markdown("Email: songhunhwa@gmail.com")
-        st.markdown("---")
 
     # Ensure API key is loaded
     if not openai.api_key:
@@ -31,10 +30,8 @@ def main():
 
             # Get OpenAI response
             response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=messages,
-                max_tokens=500,
-                temperature=1
+                model="gpt-4o-mini",
+                messages=messages
             )
             return response.choices[0].message["content"]
         except Exception as e:
