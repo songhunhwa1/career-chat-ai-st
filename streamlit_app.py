@@ -34,15 +34,18 @@ def main():
             return f"An error occurred: {e}"
 
     # Input box for user message
-    user_input = st.text_input("Type your message here:", placeholder="Ask anything...")
+    user_input = st.text_input("Type your message here:", placeholder="Ask anything...", key="user_input")
 
-    # If user submits a message
-    if st.button("Send") and user_input:
+    # If user submits a message (Enter key or Send button)
+    if user_input:
         # Generate AI response
         ai_response = get_ai_response(user_input)
 
         # Display AI response
         st.markdown(f"**AI:** {ai_response}")
+
+        # Clear the input box
+        st.session_state.user_input = ""
 
 if __name__ == "__main__":
     main()
