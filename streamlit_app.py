@@ -36,8 +36,11 @@ def main():
     # Input box for user message
     user_input = st.text_input("Type your message here:", placeholder="Ask anything...", key="user_input")
 
-    # If user submits a message (Enter key or Send button)
-    if user_input:
+    # Add a "Send" button
+    send_button = st.button("Send")
+
+    # If user submits a message via Enter key or Send button
+    if send_button and user_input:
         # Generate AI response
         ai_response = get_ai_response(user_input)
 
@@ -45,7 +48,7 @@ def main():
         st.markdown(f"**AI:** {ai_response}")
 
         # Clear the input box
-        st.session_state.user_input = ""
+        # st.session_state.user_input = ""
 
 if __name__ == "__main__":
     main()
