@@ -49,7 +49,7 @@ def main():
 
     # Add footer
     st.markdown("---")
-    st.markdown("© 2025 Chat with AI. All rights reserved.", unsafe_allow_html=True)
+    st.markdown("<div style='color: grey;'>© 2025 Chat with AI. All rights reserved.</div>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
