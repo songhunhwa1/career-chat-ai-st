@@ -21,6 +21,11 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
+    # Ensure API key is loaded
+    if not openai.api_key:
+        st.error("API key not found. Please check your .env file.")
+        return
+
     # Function to generate assistant response in chunks
     def stream_response(user_input):
         try:
@@ -40,8 +45,10 @@ def main():
             # Yield the response in chunks
             for word in full_response.split():
                 yield word + " "
-                time.sleep(0.05)  # Simulate delay for streaming
+                time.sleep(0.02)  # Adjust delay for streaming
         except Exception as e:
+            st.error("An error occurred while generating the response.")
+            print(f"Error: {e}")
             yield f"An error occurred: {e}"
 
     # Display chat history
@@ -65,11 +72,4 @@ def main():
         # Stream assistant response
         assistant_response = []
         with st.chat_message("assistant"):
-            st.write_stream(stream_response(user_input))
-
-        # Save assistant response to chat history
-        full_response = "".join(stream_response(user_input))
-        st.session_state.chat_history.append({"role": "assistant", "content": full_response})
-
-if __name__ == "__main__":
-    main()
+            for chunk in
