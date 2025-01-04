@@ -12,9 +12,23 @@ def main():
     st.set_page_config(page_title="Chat with AI")
     st.title("Chat with AI")
 
+    # Initialize session state for chat history
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+
     # Sidebar for additional options or information
     with st.sidebar:
         st.markdown("Email: songhunhwa@gmail.com")
+        st.markdown("---")
+        st.header("Previous Chats")
+
+        # Show links to previous chats
+        if st.session_state.chat_history:
+            for i, chat in enumerate(st.session_state.chat_history):
+                if st.button(f"Chat {i + 1}"):
+                    st.session_state.selected_chat = chat
+        else:
+            st.text("No previous chats available.")
 
     # Ensure API key is loaded
     if not openai.api_key:
@@ -25,8 +39,10 @@ def main():
     def get_ai_response(user_input):
         try:
             # Prepare messages
-            messages = [{"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": user_input}]
+            messages = [{"role": "system", "content": "You are a helpful assistant."}]
+            if "selected_chat" in st.session_state:
+                messages.extend(st.session_state.selected_chat)
+            messages.append({"role": "user", "content": user_input})
 
             # Get OpenAI response
             response = openai.ChatCompletion.create(
@@ -47,6 +63,10 @@ def main():
     if (send_button or user_input) and user_input.strip():
         # Generate AI response
         ai_response = get_ai_response(user_input.strip())
+
+        # Save chat history
+        st.session_state.chat_history.append({"role": "user", "content": user_input.strip()})
+        st.session_state.chat_history.append({"role": "assistant", "content": ai_response})
 
         # Display AI response
         st.markdown(f"**AI:** {ai_response}")
