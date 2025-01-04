@@ -12,10 +12,6 @@ def main():
     st.set_page_config(page_title="Chat with AI")
     st.title("Simple Chat with AI")
 
-    # Initialize chat history
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
-
     # Ensure API key is loaded
     if not openai.api_key:
         st.error("API key not found. Please check your .env file.")
@@ -24,11 +20,9 @@ def main():
     # Function to generate assistant response
     def get_ai_response(user_input):
         try:
-            # Prepare messages with chat history
-            messages = [{"role": "system", "content": "You are a helpful assistant."}]
-            for message in st.session_state.chat_history:
-                messages.append({"role": message["role"], "content": message["content"]})
-            messages.append({"role": "user", "content": user_input})
+            # Prepare messages
+            messages = [{"role": "system", "content": "You are a helpful assistant."},
+                        {"role": "user", "content": user_input}]
 
             # Get OpenAI response
             response = openai.ChatCompletion.create(
@@ -39,27 +33,16 @@ def main():
         except Exception as e:
             return f"An error occurred: {e}"
 
-    # Display chat history in plain format
-    for message in st.session_state.chat_history:
-        if message["role"] == "user":
-            st.markdown(f"**You:** {message['content']}")
-        elif message["role"] == "assistant":
-            st.markdown(f"**AI:** {message['content']}")
-
     # Input box for user message
     user_input = st.text_input("Type your message here:", placeholder="Ask anything...")
 
     # If user submits a message
     if st.button("Send") and user_input:
-        # Add user message to chat history
-        st.session_state.chat_history.append({"role": "user", "content": user_input})
-
         # Generate AI response
         ai_response = get_ai_response(user_input)
-        st.session_state.chat_history.append({"role": "assistant", "content": ai_response})
 
-        # Clear the input box (no need to reset session state)
-        st.experimental_rerun()  # Refresh the UI to clear the input
+        # Display AI response
+        st.markdown(f"**AI:** {ai_response}")
 
 if __name__ == "__main__":
     main()
