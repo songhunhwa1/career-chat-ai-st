@@ -72,4 +72,13 @@ def main():
         # Stream assistant response
         assistant_response = []
         with st.chat_message("assistant"):
-            for chunk in
+            for chunk in stream_response(user_input):
+                st.markdown(chunk, unsafe_allow_html=True)
+                assistant_response.append(chunk)
+
+        # Combine the chunks into a full response
+        full_response = "".join(assistant_response)
+        st.session_state.chat_history.append({"role": "assistant", "content": full_response})
+
+if __name__ == "__main__":
+    main()
