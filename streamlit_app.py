@@ -47,20 +47,19 @@ def main():
             st.markdown(f"**AI:** {message['content']}")
 
     # Input box for user message
-    user_input = st.text_input("Type your message here:", "", key="user_input", placeholder="Ask anything...")
+    user_input = st.text_input("Type your message here:", placeholder="Ask anything...")
 
     # If user submits a message
-    if st.button("Send"):
-        if user_input:
-            # Add user message to chat history
-            st.session_state.chat_history.append({"role": "user", "content": user_input})
+    if st.button("Send") and user_input:
+        # Add user message to chat history
+        st.session_state.chat_history.append({"role": "user", "content": user_input})
 
-            # Generate AI response
-            ai_response = get_ai_response(user_input)
-            st.session_state.chat_history.append({"role": "assistant", "content": ai_response})
+        # Generate AI response
+        ai_response = get_ai_response(user_input)
+        st.session_state.chat_history.append({"role": "assistant", "content": ai_response})
 
-            # Clear the input by resetting session state (optional)
-            st.session_state.user_input = ""
+        # Clear the input box (no need to reset session state)
+        st.experimental_rerun()  # Refresh the UI to clear the input
 
 if __name__ == "__main__":
     main()
