@@ -15,6 +15,10 @@ def main():
     # Sidebar for additional options or information
     with st.sidebar:
         st.markdown("Email: songhunhwa@gmail.com")
+        st.markdown("---")
+        st.header("Parameters")
+        max_tokens = st.number_input("Max Tokens", min_value=1, max_value=4096, value=150, step=1)
+        temperature = st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.7, step=0.1)
 
     # Ensure API key is loaded
     if not openai.api_key:
@@ -31,7 +35,9 @@ def main():
             # Get OpenAI response
             response = openai.ChatCompletion.create(
                 model="gpt-3.5-turbo",
-                messages=messages
+                messages=messages,
+                max_tokens=max_tokens,
+                temperature=temperature
             )
             return response.choices[0].message["content"]
         except Exception as e:
