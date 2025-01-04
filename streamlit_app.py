@@ -2,7 +2,6 @@ import streamlit as st
 import openai
 import os
 from dotenv import load_dotenv
-import time
 
 # Load API key from .env file
 load_dotenv()
@@ -22,26 +21,21 @@ def main():
         st.error("API key not found. Please check your .env file.")
         return
 
-    # Function to generate assistant response with streaming
-    def stream_ai_response(user_input):
+    # Function to generate assistant response
+    def get_ai_response(user_input):
         try:
             # Prepare messages
             messages = [{"role": "system", "content": "You are a helpful assistant."},
                         {"role": "user", "content": user_input}]
-            
-            # Simulate a streaming OpenAI response
+
+            # Get OpenAI response
             response = openai.ChatCompletion.create(
                 model="gpt-4o-mini",
                 messages=messages
             )
-            full_response = response.choices[0].message["content"]
-            
-            # Stream response word by word
-            for word in full_response.split():
-                yield word + " "
-                time.sleep(0.05)  # Simulate streaming delay
+            return response.choices[0].message["content"]
         except Exception as e:
-            yield f"An error occurred: {e}"
+            return f"An error occurred: {e}"
 
     # Input box for user message
     user_input = st.text_input("Type your message here:", placeholder="Ask anything...", key="user_input")
@@ -51,15 +45,11 @@ def main():
 
     # If user submits a message via Enter key or Send button
     if (send_button or user_input) and user_input.strip():
-        # Create a placeholder for streaming output
-        output_placeholder = st.empty()
-        
-        # Stream AI response
-        response_stream = stream_ai_response(user_input.strip())
-        final_response = ""
-        for chunk in response_stream:
-            final_response += chunk
-            output_placeholder.markdown(f"**AI:** {final_response}")
+        # Generate AI response
+        ai_response = get_ai_response(user_input.strip())
+
+        # Display AI response
+        st.markdown(f"**AI:** {ai_response}")
 
     # Add footer
     st.markdown("---")
