@@ -2,7 +2,6 @@ import streamlit as st
 import openai
 import os
 from dotenv import load_dotenv
-import time
 
 # Load API key from .env file
 load_dotenv()
@@ -23,7 +22,7 @@ def main():
         return
 
     # Function to generate assistant response
-    def stream_response(user_input):
+    def get_ai_response(user_input):
         try:
             # Prepare messages with chat history
             messages = [{"role": "system", "content": "You are a helpful assistant."}]
@@ -48,19 +47,20 @@ def main():
             st.markdown(f"**AI:** {message['content']}")
 
     # Input box for user message
-    user_input = st.text_input("Type your message here:", key="user_input", placeholder="Ask anything...")
+    user_input = st.text_input("Type your message here:", "", key="user_input", placeholder="Ask anything...")
 
     # If user submits a message
-    if st.button("Send") and user_input:
-        # Add user message to chat history
-        st.session_state.chat_history.append({"role": "user", "content": user_input})
+    if st.button("Send"):
+        if user_input:
+            # Add user message to chat history
+            st.session_state.chat_history.append({"role": "user", "content": user_input})
 
-        # Generate AI response
-        ai_response = stream_response(user_input)
-        st.session_state.chat_history.append({"role": "assistant", "content": ai_response})
+            # Generate AI response
+            ai_response = get_ai_response(user_input)
+            st.session_state.chat_history.append({"role": "assistant", "content": ai_response})
 
-        # Clear input box
-        st.session_state.user_input = ""
+            # Clear the input by resetting session state (optional)
+            st.session_state.user_input = ""
 
 if __name__ == "__main__":
     main()
