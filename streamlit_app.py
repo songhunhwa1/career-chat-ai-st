@@ -9,9 +9,13 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def main():
     # Page setup
-    st.set_page_config(page_title="Chat with AI")
+    st.set_page_config(page_title="Chat with AI", layout="wide")
     st.title("Simple Chat with AI")
 
+    # Sidebar for additional options or information
+    with st.sidebar:
+        st.markdown("Email: songhunhwa@gmail.com")
+        
     # Ensure API key is loaded
     if not openai.api_key:
         st.error("API key not found. Please check your .env file.")
@@ -48,7 +52,7 @@ def main():
         st.markdown(f"**AI:** {ai_response}")
 
         # Clear the input box
-        # st.session_state["user_input"] = ""
+        st.session_state["user_input"] = ""
 
 if __name__ == "__main__":
     main()
