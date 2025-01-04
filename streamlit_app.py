@@ -41,12 +41,13 @@ def main():
     user_input = st.text_input("Type your message here:", placeholder="Ask anything...", key="user_input")
 
     # Add a "Send" button
-    send_button = st.button("Send")
-
+    send_button = st.button("SEND")
+    
     # If user submits a message via Enter key or Send button
     if (send_button or user_input) and user_input.strip():
-        # Generate AI response
-        ai_response = get_ai_response(user_input.strip())
+        with st.spinner("Generating response..."):
+            # Generate AI response
+            ai_response = get_ai_response(user_input.strip())
 
         # Display AI response
         st.markdown(f"**AI:** {ai_response}")
@@ -54,6 +55,7 @@ def main():
     # Add footer
     st.markdown("---")
     st.markdown("<div style='color: grey;'>© 2025 Chat with AI. All rights reserved.</div>", unsafe_allow_html=True)
+    
 
 if __name__ == "__main__":
     main()
