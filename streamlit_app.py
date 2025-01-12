@@ -25,7 +25,7 @@ def main():
     def get_ai_response(user_input):
         try:
             # Prepare messages
-            messages = [{"role": "system", "content": "You are a helpful assistant."},
+            messages = [{"role": "system", "content": "You are a helpful assistant. Kindly respond and the response should be clear, informative, and around 150-200 words long. Use a professional and neutral tone."},
                         {"role": "user", "content": user_input}]
 
             # Get OpenAI response
