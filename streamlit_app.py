@@ -30,7 +30,7 @@ def main():
 
             # Get OpenAI response
             response = openai.ChatCompletion.create(
-                model="gpt-4o-mini",
+                model="gpt-4.1-nano",
                 messages=messages,
                 max_tokens=500
             )
