@@ -12,9 +12,9 @@ def main():
     st.set_page_config(page_title="Chat with AI")
     st.title("Chat with AI")
 
-    # # Sidebar for additional options or information
-    # with st.sidebar:
-    #     st.markdown("Email: songhunhwa@gmail.com")
+    # Sidebar for additional options or information
+    with st.sidebar:
+        st.markdown("Hello Joan. A good day.")
 
     # Ensure API key is loaded
     if not openai.api_key:
