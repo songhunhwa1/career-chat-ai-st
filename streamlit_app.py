@@ -11,10 +11,11 @@ def main():
     # Page setup
     st.set_page_config(page_title="Chat with AI")
     st.title("Chat with AI")
+    st.markdown("Hello Joan. Have a good day.")
 
-    # Sidebar for additional options or information
-    with st.sidebar:
-        st.markdown("Hello Joan. A good day.")
+    # # Sidebar for additional options or information
+    # with st.sidebar:
+    #     st.markdown("Hello Joan. A good day.")
 
     # Ensure API key is loaded
     if not openai.api_key:
